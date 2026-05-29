@@ -199,10 +199,11 @@ namespace MatrixHole
             {
                 try
                 {
-                    var fileUrl = $"file:///{indexPath.Replace("\\", "/")}";
-                    Log($"File URL: {fileUrl}");
-                    WebView.CoreWebView2.Navigate(fileUrl);
-                    Log("Navigation called (file://)");
+                    WebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                        "app.matrixhole", wwwroot,
+                        Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
+                    WebView.CoreWebView2.Navigate("https://app.matrixhole/index.html");
+                    Log("Navigation called (via virtual host)");
                 }
                 catch (Exception navEx)
                 {

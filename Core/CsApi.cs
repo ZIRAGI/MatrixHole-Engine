@@ -1279,19 +1279,27 @@ namespace MatrixHole
         public string GetHwid() => "{\"hwid\":\"" + Core.LicenseManager.GetHwid() + "\"}";
 
         // ========== Updater ==========
-        public async Task<string> CheckForUpdate()
+        public string CheckForUpdate()
         {
-            var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.0.0";
-            var latest = await Core.UpdaterLauncher.CheckForUpdateAsync(currentVersion);
-            return latest != null
-                ? "{\"hasUpdate\":true,\"version\":\"" + latest + "\",\"current\":\"" + currentVersion + "\"}"
-                : "{\"hasUpdate\":false,\"current\":\"" + currentVersion + "\"}";
+            try
+            {
+                var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.0.0";
+                var latest = Task.Run(() => Core.UpdaterLauncher.CheckForUpdateAsync(currentVersion)).Result;
+                return latest != null
+                    ? "{\"hasUpdate\":true,\"version\":\"" + latest + "\",\"current\":\"" + currentVersion + "\"}"
+                    : "{\"hasUpdate\":false,\"current\":\"" + currentVersion + "\"}";
+            }
+            catch { return "{\"hasUpdate\":false}"; }
         }
 
-        public async Task<string> DownloadUpdate(string version)
+        public string DownloadUpdate(string version)
         {
-            var ok = await Core.UpdaterLauncher.DownloadUpdateAsync(version);
-            return ok ? "{\"ok\":true}" : "{\"ok\":false,\"error\":\"Download failed\"}";
+            try
+            {
+                var ok = Task.Run(() => Core.UpdaterLauncher.DownloadUpdateAsync(version)).Result;
+                return ok ? "{\"ok\":true}" : "{\"ok\":false,\"error\":\"Download failed\"}";
+            }
+            catch { return "{\"ok\":false,\"error\":\"Exception\"}"; }
         }
 
         public string IsUpdatePending() => JsonConvert.SerializeObject(new { pending = Core.UpdaterLauncher.IsUpdatePending() });
