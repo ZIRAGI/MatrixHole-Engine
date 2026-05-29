@@ -447,6 +447,51 @@ body::after {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.preset-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.preset-btn {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+.preset-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+.preset-btn.active {
+  border-color: var(--accent-primary);
+  background: rgba(0, 240, 255, 0.05);
+  color: var(--text-primary);
+}
+.preset-btn svg {
+  width: 40px;
+  height: 40px;
+  color: inherit;
+  stroke: currentColor;
+}
+.preset-sub {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
 .card::before {
   content: '';
   position: absolute;
