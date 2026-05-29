@@ -1,0 +1,26 @@
+# Build outputs
+bin/
+obj/
+publish/
+
+# IDE
+.vs/
+*.user
+*.suo
+
+# Secrets
+**/app_secrets.json
+
+# Logs
+*.log
+
+# ImGui (external library, huge)
+Injector/imgui-1.91.0/
+
+# Backup files
+Backups/
+*.bak
+
+# Temporary
+*.tmp
+*.temp
