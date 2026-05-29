@@ -96,6 +96,7 @@ namespace MatrixHole.Core
         {
             try
             {
+                if (SteamAccountResolver.IsDeveloper()) return true;
                 if (!File.Exists(LicenseFile)) return false;
                 var encrypted = File.ReadAllBytes(LicenseFile);
                 var json = Encoding.UTF8.GetString(Unprotect(encrypted));
@@ -178,6 +179,16 @@ namespace MatrixHole.Core
 
         public static string GetLicenseStatusJson()
         {
+            if (SteamAccountResolver.IsDeveloper())
+            {
+                return JsonConvert.SerializeObject(new
+                {
+                    licensed = true,
+                    tier = "pro",
+                    daysLeft = 999,
+                    hwid = GetHwid()
+                });
+            }
             var lic = GetLicenseInfo();
             if (lic == null) return "{\"licensed\":false}";
             var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
